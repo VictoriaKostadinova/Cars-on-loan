@@ -1,0 +1,178 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+const int maxcars=100;
+
+struct Car{
+    string marka;
+    string model;
+    int godina=0;
+    string RegNum;
+    float moshtnost;
+    string status;
+    string egn;};
+    
+void AddCars(Car cars[], int size)
+{
+    int current = 0;
+    int koliToAdd;
+    cout << "Kolko koli iskash da vuvedesh: ";
+    cin >> koliToAdd;
+
+    if (koliToAdd + current > size)
+    {
+        cout << "Nqma mqsto" << endl;
+        return;
+    }
+
+    for (int i = current; i < koliToAdd + current; i++)
+    {
+        cout << "Vuvedi kola #" << i + 1 << endl;
+
+        cout << "Izberi status zaet ili svoboden" << endl;
+        cin >> cars[i].status;
+
+        if (!(cars[i].status == "zaet" || cars[i].status == "svoboden"))
+        {
+            cout << "Nevaliden statut" << endl;
+            i--;
+            continue;
+        }
+
+        cout << "Enter a brand car " << i + 1 << ": ";
+        cin.ignore(); // Consume the newline character left in the stream
+        getline(cin, cars[i].marka);
+
+        cout << "Vuvedete model: ";
+        cin >> cars[i].model;
+
+        cout << "Vuvedete godina na proizvodstvo: ";
+        cin >> cars[i].godina;
+
+        cout << "Vuvedete registracionen nomer: ";
+        cin >> cars[i].RegNum;
+
+        cout << "Vuvedete moshtnost: ";
+        cin >> cars[i].moshtnost;
+
+        cout << "EGN na naematel: ";
+        cin >> cars[i].egn;
+    }
+}
+//Izvejdane na kolite 
+void OutputCars(const Car cars[], int size)
+{
+    int current=size;
+    cout<<"Izvejdane na koli ot masiva: "<<endl;
+   	 if (current == 0)
+	 {
+		 cout << "Nqma vuvedeni koli" << endl;
+		 return;
+	 }
+
+	 for (int i = 0; i < current; i++)
+	 {
+		 cout << "Kola # " << i + 1 << endl;
+		 cout << "Statut: " << cars[i].status << endl;
+		 cout << "Marka: " << cars[i].marka << endl;
+		 cout << "Model: " << cars[i].model << endl;
+		 cout << "Godina: " << cars[i].godina << endl;
+		 cout << "Nomer: " << cars[i].RegNum << endl;
+		 cout << "Moshtnost: " << cars[i].moshtnost << endl;
+		 cout << "Egn: " << cars[i].egn << endl;
+	 }
+}
+//Tursene na koli spored tqhnata moshtnost
+void SearchCarbyPower( Car cars[], int size, float targetmoshtnost)
+{
+    cout<<"Tursene na kola sprqmo opredelena moshtnost"<<targetmoshtnost<<endl;
+      for (int i = 0; i < size; i++) {
+        if (i<size && cars[i].moshtnost == targetmoshtnost) {
+            cout << "Kola sas " << i + 1<<"moshtnost: " << cars[i].moshtnost<< " e marka: " << cars[i].marka << " i model: " << cars[i].model  << " s godina na proizvodstvo: " << cars[i].godina <<  " i status: " << cars[i].status<<endl;
+        }
+    }
+}
+
+//Tursene na koli spored godinata na proizvodstvo
+void SearchCarbyYear( Car cars[], int size, float targetgodina)
+{
+    cout<<"Tursene na kola sprqmo godinata na proizvodtstvo"<<targetgodina<<endl;
+      for (int i = 0; i < size; i++) {
+        if (cars[i].godina == targetgodina) {
+            cout << "Kola " << i + 1 << " Marka: " << cars[i].marka << " Model: " << cars[i].model  << " Godina na proizvodstvo: " << cars[i].godina << " Moshtnost: " << cars[i].moshtnost << " Status: " << cars[i].status<<" Egn na naematel: " << cars[i].egn<<endl;
+        }
+    }
+}
+// Подреждане на колите в намаляващ ред на мощността;
+
+void BubbleSortByPower(Car cars[], int size)
+{
+    Car temp;  // Декларацията на temp трябва да бъде направена само веднъж
+    for (int i = 0; i < size - 1; ++i) {
+        for (int j = 0; j < size - i - 1; ++j) {
+            if (cars[j].moshtnost < cars[j + 1].moshtnost) {
+                // Размяна на елементите
+                temp = cars[j];  // Използвайте съществуващата променлива temp
+                cars[j] = cars[j + 1];
+                cars[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main()
+{
+    Car cars[maxcars];
+    int choice;
+    
+     do {
+        cout << "\nMenu:\n";
+        cout << "1. Dobavete kola ili koli." << endl;
+        cout << "2. Izvejdane na kolite." << endl;
+        cout << "3. Tursene po moshtnost." << endl;
+        cout << "4. Tursene po godina" << endl;
+        cout << "5. Sortirovka v namalqvasht red po moshtnost." << endl;
+        cout << "6.Sortirovka na masiva bez izvejdane na ekrana." << endl; // Нов опция
+        cout << "7. Exit" << endl;
+        cin >> choice;
+        cin.ignore(); // Consume the newline character left in the stream
+    
+    switch(choice){
+        case 1:
+            AddCars(cars, maxcars);
+            break;
+        case 2:
+        int current;
+            OutputCars(cars, maxcars);
+            break;
+        case 3:
+            float targetmoshtnost;
+            cout << "Enter the target power: ";
+            cin >> targetmoshtnost;
+            SearchCarbyPower(cars, maxcars, targetmoshtnost);
+            break;
+        case 4:
+            int targetgodina;
+            cout << "Enter the target year: ";
+            cin >> targetgodina;
+            SearchCarbyYear(cars, maxcars, targetgodina);
+            break;
+        case 5:
+            BubbleSortByPower(cars, maxcars);
+            cout << "Cars sorted by power." << endl;
+            break;
+        case 6:
+            BubbleSortByPower(cars, maxcars); // Можете да изберете подходящата функция за сортиране
+            cout << "Array sorted without displaying." << endl;
+            break;
+        case 7:
+            cout << "Exiting the program" << endl;
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+        }
+    } while (choice != 7);
+
+    return 0;}
+        
